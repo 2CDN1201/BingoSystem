@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ビンゴ!!!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+            font-size: 3em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #numberDisplay {
+            font-size: 3em;
+            margin: 20px;
+            color: #333;
+        }
+        #history {
+            margin-top: 20px;
+            display: none; /* 初期状態では非表示 */
+        }
+        #historyList {
+            background: #fffde8;
+            box-shadow: 0px 0px 0px 10px #fffde8; /*線の外側*/
+            border: dashed 2px #ffb03f; /*破線*/
+            border-radius: 9px;
+            margin-left: 10px; /*はみ出ないように調整*/
+            margin-right: 10px; /*はみ出ないように調整*/
+            padding: 0.5em 0.5em 0.5em 2em;
+            list-style-type: decimal; /* インデックス番号を表示 */
+        }
+        #historyList li {
+            line-height: 1.5;
+            padding: 0.5em 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>ビンゴ!!</h1>
+    <button onclick="generateNumber()">番号を生成</button>
+    <div id="numberDisplay">抽選結果はこちら</div>
+    <div id="history">
+        <h2>履歴</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <script>
+        let numbers = [];
+        let history = [];
+
+        function generateNumber() {
+            if (numbers.length >= 75) {
+                alert("全て出そろいました！");
+                return;
+            }
+
+            let number;
+            do {
+                number = Math.floor(Math.random() * 75) + 1;
+            } while (numbers.includes(number));
+
+            numbers.push(number);
+            history.push(number);
+            document.getElementById("numberDisplay").innerText = number;
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById("historyList");
+            const historyDiv = document.getElementById("history");
+            historyList.innerHTML = "";
+
+            if (history.length > 0) {
+                historyDiv.style.display = "block"; // 履歴がある場合は表示
+                history.forEach(num => {
+                    const listItem = document.createElement("li");
+                    listItem.innerText = num;
+                    historyList.appendChild(listItem);
+                });
+            } else {
+                historyDiv.style.display = "none"; // 履歴がない場合は非表示
+            }
+        }
+    </script>
+</body>
+</html>
